@@ -1,0 +1,78 @@
+<?php
+class CurrencyExchangeAPI {
+    private $apiKey;
+    private $apiBaseUrl;
+
+    public function __construct($apiKey, $apiBaseUrl) {
+        $this->apiKey = $apiKey;
+        $this->apiBaseUrl = $apiBaseUrl;
+    }
+
+    public function getExchangeRate($sourceCurrency, $targetCurrency) {
+        // Code pour interroger l'API tiers et obtenir le taux de change
+        // Utilisez $this->apiKey et $this->apiBaseUrl pour construire l'URL de l'API
+        // Effectuez une requête HTTP GET à l'API et traitez la réponse
+        // Retourne le taux de change
+    }
+}
+
+// CurrencyConverter.php
+class CurrencyConverter {
+    private $exchangeAPI;
+
+    public function __construct($exchangeAPI) {
+        $this->exchangeAPI = $exchangeAPI;
+    }
+
+    public function convertCurrency($amount, $sourceCurrency, $targetCurrency) {
+        // Obtenez le taux de change à l'aide de l'API d'échange de devises
+        $exchangeRate = $this->exchangeAPI->getExchangeRate($sourceCurrency, $targetCurrency);
+        
+        // Effectuez la conversion
+        $convertedAmount = $amount * $exchangeRate;
+
+        return $convertedAmount;
+    }
+
+    public function getSupportedCurrencies() {
+        // Liste des devises prises en charge
+        // Vous pouvez définir manuellement cette liste ou interroger l'API tiers si nécessaire
+        $supportedCurrencies = array(
+            "USD" => "US Dollar",
+            "EUR" => "Euro",
+            "GBP" => "British Pound",
+            // Ajoutez d'autres devises si nécessaire
+        );
+
+        return $supportedCurrencies;
+    }
+}
+
+// index.php (pour l'API)
+$apiKey = "2001";
+$apiBaseUrl = "URL_DE_L_API";
+$exchangeAPI = new CurrencyExchangeAPI($apiKey, $apiBaseUrl);
+$currencyConverter = new CurrencyConverter($exchangeAPI);
+
+// Gérer les requêtes HTTP pour l'API
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if ($_GET['action'] === 'convert') {
+        // Gérer la conversion de devises
+        // Utilisez $_GET['amount'], $_GET['sourceCurrency'], $_GET['targetCurrency']
+        // Appelez $currencyConverter->convertCurrency() et renvoyez le résultat
+    } elseif ($_GET['action'] === 'supportedCurrencies') { 
+        $supportedCurrencies = $currencyConverter->getSupportedCurrencies();
+        // Output the list of supported currencies as JSON
+        header('Content-Type: application/json');
+        echo json_encode($supportedCurrencies);
+        exit; // Stop further execution
+    } else {
+        // Gérer les autres actions (si nécessaire)
+    }
+} else {
+    // Gérer les autres méthodes HTTP (si nécessaire)
+}
+
+
+
+?>
